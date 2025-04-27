@@ -17,7 +17,7 @@ func Initialize() (*Config, error) {
 	config_ = &Config{}
 	data, err := os.ReadFile("config.local.json")
 	if err != nil {
-		return nil, fmt.Errorf("error to load config.loca.json : %w", err)
+		return nil, fmt.Errorf("error to load config.local.json : %w", err)
 	}
 	var cfg Config
 	if err := json.Unmarshal(data, &cfg); err != nil {

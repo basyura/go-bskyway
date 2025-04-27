@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"bskyway/config"
@@ -36,7 +37,13 @@ func doMain() error {
 	for {
 		out, err := bsky.FeedGetTimeline(ctx, client, "reverse-chronological", "", 5)
 		if err != nil {
-			return fmt.Errorf("get timeline failed: %w", err)
+			if strings.Contains(err.Error(), "ExpiredToken") {
+				client, err = session.NewSession(ctx)
+				if err != nil {
+					return fmt.Errorf("session refresh failed: %w", err)
+				}
+				continue
+			}
 		}
 
 		feeds := filter(out, lastCid)
