@@ -24,7 +24,10 @@ func doMain() error {
 	}
 
 	ctx := context.Background()
-	client := session.NewSession(ctx)
+	client, err := session.NewSession(ctx)
+	if err != nil {
+		return err
+	}
 
 	out, err := bsky.FeedGetTimeline(ctx, client, "reverse-chronological", "", 10)
 	if err != nil {
@@ -35,11 +38,19 @@ func doMain() error {
 		if item.Post == nil {
 			continue
 		}
-		// Record.Val は CBORMarshaler 型なので、*bsky.FeedPost にキャスト
-		if rec, ok := item.Post.Record.Val.(*bsky.FeedPost); ok {
-			fmt.Println(*item.Post.Author.DisplayName, ":", rec.Text)
-		}
+		fmt.Println(format(item))
 	}
 
 	return nil
+}
+
+func format(feed *bsky.FeedDefs_FeedViewPost) string {
+
+	// Record.Val は CBORMarshaler 型なので、*bsky.FeedPost にキャスト
+	txt := ""
+	if rec, ok := feed.Post.Record.Val.(*bsky.FeedPost); ok {
+		txt = *feed.Post.Author.DisplayName + ":" + rec.Text
+	}
+
+	return txt
 }

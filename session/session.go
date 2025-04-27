@@ -3,13 +3,13 @@ package session
 import (
 	"bskyway/config"
 	"context"
-	"log"
+	"fmt"
 
 	"github.com/bluesky-social/indigo/api/atproto"
 	"github.com/bluesky-social/indigo/xrpc"
 )
 
-func NewSession(ctx context.Context) *xrpc.Client {
+func NewSession(ctx context.Context) (*xrpc.Client, error) {
 
 	client := &xrpc.Client{Host: "https://bsky.social"}
 	conf := config.Instance()
@@ -18,14 +18,16 @@ func NewSession(ctx context.Context) *xrpc.Client {
 		Identifier: conf.Identifier,
 		Password:   conf.PassWord,
 	})
+
 	if err != nil {
-		log.Fatalf("login failed: %v", err)
+		return nil, fmt.Errorf("login failed: %v", err)
 	}
+
 	client.Auth = &xrpc.AuthInfo{
 		AccessJwt: sess.AccessJwt,
 		Did:       sess.Did,
 		Handle:    sess.Handle,
 	}
 
-	return client
+	return client, nil
 }
