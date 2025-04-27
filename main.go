@@ -7,10 +7,10 @@ import (
 
 	"bskyway/config"
 	"bskyway/model"
+	"bskyway/notifier"
 	"bskyway/session"
 
 	"github.com/bluesky-social/indigo/api/bsky"
-	"github.com/go-toast/toast"
 )
 
 func main() {
@@ -54,15 +54,9 @@ func doMain() error {
 				lastCid = post.Cid
 
 				fmt.Println(post.Format())
+				notifier.Notify(post)
 				fmt.Println("--------------------------------------------------")
 				time.Sleep(5 * time.Second)
-
-				notification := toast.Notification{
-					AppID:   "bskyway",
-					Title:   post.Name,
-					Message: post.Text,
-				}
-				notification.Push()
 			}
 		}
 		// fmt.Println("==================================================")

@@ -3,12 +3,15 @@ module bskyway
 go 1.23.4
 
 require (
-	github.com/bluesky-social/indigo v0.0.0-20250425223227-c6066a8845a0 // indirect
+	github.com/bluesky-social/indigo v0.0.0-20250425223227-c6066a8845a0
+	github.com/go-toast/toast v0.0.0-20190211030409-01e6764cf0a4
+)
+
+require (
 	github.com/carlmjohnson/versioninfo v0.22.5 // indirect
 	github.com/felixge/httpsnoop v1.0.4 // indirect
 	github.com/go-logr/logr v1.4.1 // indirect
 	github.com/go-logr/stdr v1.2.2 // indirect
-	github.com/go-toast/toast v0.0.0-20190211030409-01e6764cf0a4 // indirect
 	github.com/gogo/protobuf v1.3.2 // indirect
 	github.com/google/uuid v1.4.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
