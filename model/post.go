@@ -12,6 +12,7 @@ type Post struct {
 	Text      string
 	Cid       string
 	CreatedAt time.Time
+	Avatar    string
 }
 
 func (p *Post) Format() string {
@@ -38,8 +39,9 @@ func ConvertToPost(feed *bsky.FeedDefs_FeedViewPost) *Post {
 	name := *feed.Post.Author.DisplayName
 
 	post := &Post{
-		Name: name,
-		Cid:  feed.Post.Cid,
+		Name:   name,
+		Cid:    feed.Post.Cid,
+		Avatar: *feed.Post.Author.Avatar,
 	}
 
 	// Record.Val は CBORMarshaler 型なので、*bsky.FeedPost にキャスト
