@@ -23,16 +23,16 @@ func Notify(post *model.Post) {
 	hash := sha1.Sum([]byte(avatarURL))
 	filename := fmt.Sprintf("%x%s", hash[:], ".jpeg")
 	cacheDir := config.Instance().IconCacheDir
-	cachePath := filepath.Join(cacheDir, filename)
+	imgPath := filepath.Join(cacheDir, filename)
 
 	// Download the avatar only if it does not already exist in the temp directory.
-	if _, err := os.Stat(cachePath); os.IsNotExist(err) {
+	if _, err := os.Stat(imgPath); os.IsNotExist(err) {
 		resp, err := http.Get(avatarURL)
 		if err != nil {
 			fmt.Println("avatar download error:", err)
 		} else {
 			defer resp.Body.Close()
-			out, err := os.Create(cachePath)
+			out, err := os.Create(imgPath)
 			if err != nil {
 				fmt.Println("avatar file create error:", err)
 			} else {
@@ -44,12 +44,10 @@ func Notify(post *model.Post) {
 		}
 	}
 
-	fmt.Println("cachePath :", cachePath)
 	cmd := exec.Command("terminal-notifier",
 		"-title", title,
 		"-message", message,
-		"-appIcon", cachePath,
-		"-contentImage", cachePath,
+		"-contentImage", imgPath,
 	)
 
 	if err := cmd.Run(); err != nil {
