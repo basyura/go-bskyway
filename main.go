@@ -12,6 +12,7 @@ import (
 	"bskyway/session"
 
 	"github.com/bluesky-social/indigo/api/bsky"
+	"github.com/common-nighthawk/go-figure"
 )
 
 func main() {
@@ -21,10 +22,19 @@ func main() {
 }
 
 func doMain() error {
+	fmt.Println("")
+	myFigure := figure.NewFigure("bskyway", "", true)
+	myFigure.Print()
 	// 設定の初期化
-	if _, err := config.Initialize(); err != nil {
+	config, err := config.Initialize()
+	if err != nil {
 		return err
 	}
+
+	fmt.Println("")
+	fmt.Println("identifier   :", config.Identifier)
+	fmt.Println("IconCacheDir :", config.IconCacheDir)
+	fmt.Println("")
 
 	// セッションの生成
 	ctx := context.Background()
