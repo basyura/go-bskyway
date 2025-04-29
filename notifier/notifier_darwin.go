@@ -3,6 +3,7 @@
 package notifier
 
 import (
+	"bskyway/config"
 	"bskyway/model"
 	"crypto/sha1"
 	"fmt"
@@ -21,8 +22,8 @@ func Notify(post *model.Post) {
 	// Generate a deterministic filename based on the avatar URL so we can reuse it from the temp directory.
 	hash := sha1.Sum([]byte(avatarURL))
 	filename := fmt.Sprintf("%x%s", hash[:], ".jpeg")
-	// cachePath := filepath.Join(os.TempDir(), filename)
-	cachePath := filepath.Join("/Users/tatsuya/Downloads/", filename)
+	cacheDir := config.Instance().IconCacheDir
+	cachePath := filepath.Join(cacheDir, filename)
 
 	// Download the avatar only if it does not already exist in the temp directory.
 	if _, err := os.Stat(cachePath); os.IsNotExist(err) {
