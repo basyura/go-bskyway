@@ -39,13 +39,15 @@ func doMain() error {
 	for {
 		// タイムラインの取得
 		out, err := bsky.FeedGetTimeline(ctx, client, "reverse-chronological", "", 10)
-		// セッションの再生成
+		// エラー発生時はセッションの再生成
 		if err != nil {
 			if strings.Contains(err.Error(), "ExpiredToken") {
 				client, err = session.NewSession(ctx)
+				// 再度エラーが発生した場合は終了
 				if err != nil {
 					return fmt.Errorf("session refresh failed: %w", err)
 				}
+				// タイムラインの取得からやり直す
 				continue
 			}
 		}
