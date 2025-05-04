@@ -61,7 +61,7 @@ func doMain() error {
 
 func initialize() error {
 	fmt.Println("")
-	myFigure := figure.NewFigure("bskyway", "banner", true)
+	myFigure := figure.NewFigure("bskyway", "", true)
 	myFigure.Print()
 	// 設定の初期化
 	config, err := config.Initialize()
