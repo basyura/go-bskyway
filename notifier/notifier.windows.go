@@ -5,15 +5,10 @@ package notifier
 import (
 	"bskyway/model"
 
-	"github.com/go-toast/toast"
+	"github.com/gen2brain/beeep"
 )
 
 func Notify(post *model.Post) {
-
-	notification := toast.Notification{
-		AppID:   "bskyway",
-		Title:   post.Name,
-		Message: post.Text,
-	}
-	notification.Push()
+	path := downloadAvatar(post)
+	beeep.Notify(post.Name, post.Text, path)
 }
